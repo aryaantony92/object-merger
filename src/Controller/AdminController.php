@@ -28,6 +28,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
+use Pimcore\Version;
 
 /**
  * @Route("/admin/elementsobjectmerger/admin")
@@ -243,8 +244,18 @@ class AdminController extends UserAwareController
     {
         $objectId = $request->get('id');
 
-        if (Editlock::isLocked($objectId, 'object', $request->getSession()->getId())) {
-            return $this->jsonResponse(['success' => false, 'message' => 'plugin_objectmerger_object_locked']);
+        /**
+         * @TODO Remove when removing support for Pimcore 10
+         */
+        if (Version::getMajorVersion() >= 11) {
+            if (Editlock::isLocked($objectId, 'object', $request->getSession()->getId())) {
+                return $this->jsonResponse(['success' => false, 'message' => 'plugin_objectmerger_object_locked']);
+            }
+        }
+        else {
+            if (Editlock::isLocked($objectId, 'object')) {
+                return $this->jsonResponse(['success' => false, 'message' => 'plugin_objectmerger_object_locked']);
+            }
         }
 
         $attributes = json_decode($request->get('attributes'), true);
