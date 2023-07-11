@@ -249,6 +249,7 @@ class AdminController extends UserAwareController
 
         $attributes = json_decode($request->get('attributes'), true);
 
+        /** @var \Pimcore\Model\DataObject\Concrete $object */
         $object = AbstractObject::getById($objectId);
 
         $preMergeEvent = new GenericEvent($this, [
