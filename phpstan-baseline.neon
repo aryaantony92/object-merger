@@ -3,4 +3,4 @@ parameters:
 		-
 		    message: "#^Static method Pimcore\\\\Model\\\\Element\\\\Editlock\\:\\:isLocked\\(\\) invoked with 2 parameters, 3 required.$#"
 		    count: 1
-            path: src/Controller/AdminController.php
+		    path: src/Controller/AdminController.php
